@@ -36,6 +36,9 @@ class IP2Country::IP2CC
     return modified
   end
 
+  @table : Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String)))
+  @cache : Hash(UInt32, String)
+
   def initialize
     @table = Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String))).new do |h,k|
       h[k] = Array(Tuple(Range(IPAddr, IPAddr), String)).new
@@ -86,7 +89,12 @@ class IP2Country::IP2CC
     getter cache_file
     getter mtime
 
-    def initialize(@name : String, uri_string : String)
+    @name : String
+    @uri : URI
+    @cache_file : String
+    @mtime : Time
+
+    def initialize(@name, uri_string : String)
       @uri = URI.parse(uri_string)
       @cache_file = CACHE_DIR + "/#{@name}.dat"
       @mtime = File.exists?(@cache_file) ? File.stat(@cache_file).mtime : Time.new(2000, 1, 1)

@@ -4,7 +4,7 @@ require "uri"
 require "yaml"
 
 class IP2Country
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
 
   CACHE_DIR = File.expand_path(File.dirname(__FILE__)) + "/cache"
   REGISTRARS = {
@@ -21,6 +21,10 @@ class IP2Country
     CC2Country.cache_update
     IP2CC.cache_update
   end
+
+  @default_lang : String
+  @conversion : IP2CC
+  @country_code : CC2Country
 
   def initialize(@default_lang = "en")
     unless File.directory?(CACHE_DIR)

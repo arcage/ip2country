@@ -29,6 +29,8 @@ class IP2Country::CC2Country
     return modified
   end
 
+  @table : Hash(String, Hash(String, String))
+
   def initialize()
     @table = Hash(String, Hash(String, String)).new do |h,k|
       h[k] = Hash(String, String).new

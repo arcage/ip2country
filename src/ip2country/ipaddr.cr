@@ -5,7 +5,9 @@ struct IP2Country::IPAddr
 
   getter value
 
-  def initialize(@value : UInt32)
+  @value : UInt32
+
+  def initialize(@value)
   end
 
   def initialize(addr : String)
