@@ -19,19 +19,22 @@ class IP2Country::IP2CC
       end
       ranges = table.keys.sort{|a,b| a.begin <=> b.begin}
       File.open(FILE_NAME, "w") do |fp|
-        until ranges.empty?
-          range = ranges.shift
+        while range = ranges.shift?
           cc = table[range]
-          if !ranges.empty? && range.end.succ == ranges.first.begin && table[ranges.first] == cc
-            range = range.begin .. ranges.first.end
-            ranges.shift
+          while next_range = ranges.first?
+            if range.end.succ == next_range.begin && table[next_range] == cc
+              range = range.begin .. next_range.end
+              ranges.shift
+            else
+              break
+            end
           end
           fp.puts [range.begin, range.end, cc].join("\t")
         end
       end
       STDERR.puts "[IP2Coutnry] IP to CC conversion table updated."
     else
-      STDERR.puts "[IP2Coutnry] IP to CC conversion table not modified."\
+      STDERR.puts "[IP2Coutnry] IP to CC conversion table not modified."
     end
     return modified
   end

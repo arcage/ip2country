@@ -39,9 +39,7 @@ ip2country.lookup_all("8.8.8.8")
 # => {"de" => "Vereinigte Staaten", "en" => "United States", "es" => "Estados Unidos", "fr" => "États-Unis", "ja" => "アメリカ合衆国", "ko" => "미국", "pt" => "Estados Unidos", "zh" => "美国"}
 ```
 
-At the first time you use, this library will fetch some conversion tables, and cache them.
-
-This may take a while.
+At the first time you use, this library will fetch some conversion tables, and cache them. This may take a while.
 
 When you want to update cache of tables, you can call `IP2Country.cache_update` explicitly.
 

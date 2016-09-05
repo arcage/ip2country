@@ -39,7 +39,7 @@ class IP2Country::CC2Country
       lang = File.basename(file, ".yaml")
       data = YAML.parse(File.read(file)).as_h
       data.each do |cc, name|
-        @table[cc as String][lang] = name as String
+        @table[cc.as(String)][lang] = name.as(String)
       end
     end
   end

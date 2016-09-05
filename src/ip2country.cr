@@ -4,7 +4,7 @@ require "uri"
 require "yaml"
 
 class IP2Country
-  VERSION = "0.1.1"
+  VERSION = "0.1.2"
 
   CACHE_DIR = File.expand_path(File.dirname(__FILE__)) + "/cache"
   REGISTRARS = {
@@ -39,7 +39,7 @@ class IP2Country
     @country_code.lookup(@conversion.lookup(addr), lang)
   end
 
-  def lookup(addr : String, lang : String =@default_lang) : String
+  def lookup(addr : String, lang : String = @default_lang) : String
     lookup(IPAddr.new(addr), lang)
   end
 
