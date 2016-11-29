@@ -40,9 +40,8 @@ class IP2Country::IP2CC
   end
 
   @table : Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String)))
-  @cache : Hash(UInt32, String)
 
-  def initialize
+  def initialize()
     @table = Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String))).new do |h,k|
       h[k] = Array(Tuple(Range(IPAddr, IPAddr), String)).new
     end
@@ -55,21 +54,13 @@ class IP2Country::IP2CC
         @table[class_a] << {range, cc}
       end
     end
-    @cache = Hash(UInt32, String).new
   end
 
   def lookup(addr : IPAddr) : String
-    return @cache[addr.value] if @cache.has_key?(addr.value)
-    cc = ""
-    @table[addr.octet(0)].each do |tpl|
-      range = tpl[0]
-      if range === addr
-        cc = tpl[1]
-        break
-      end
+    @table[addr.octet(0)].each do |range, cc|
+      return cc if range === addr
     end
-    @cache[addr.value] = cc
-    return cc
+    ""
   end
 
   class Registrar
