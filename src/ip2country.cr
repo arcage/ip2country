@@ -6,7 +6,7 @@ require "yaml"
 class IP2Country
   VERSION = "0.1.3"
 
-  CACHE_DIR = File.expand_path(File.dirname(__FILE__)) + "/cache"
+  CACHE_DIR = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/cache"
   REGISTRARS = {
     "ARIN" => "http://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest",
     "RIPE" => "http://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-extended-latest",
