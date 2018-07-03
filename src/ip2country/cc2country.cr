@@ -1,4 +1,3 @@
-
 class IP2Country::CC2Country
   CACHE_DIR = IP2Country::CACHE_DIR + "/country"
 
@@ -8,22 +7,22 @@ class IP2Country::CC2Country
     IP2Country::LANGS.each do |lang|
       uri = URI.parse("https://raw.githubusercontent.com/umpirsky/country-list/master/data/#{lang}/country.yaml")
       cache_file = CACHE_DIR + "/#{lang}.yaml"
-      mtime = File.exists?(cache_file) ? File.stat(cache_file).mtime : Time.new(2000, 1, 1)
+      mtime = File.exists?(cache_file) ? File.info(cache_file).modification_time : Time.new(2000, 1, 1)
       http = HTTP::Client.new(uri)
       headers = HTTP::Headers.new
-      headers["If-modified-since"] = HTTP.rfc1123_date(mtime)
+      headers["If-modified-since"] = HTTP.format_time(mtime)
       responce = http.get(uri.path.not_nil!, headers)
       case responce.status_code
       when 200
-        STDERR.puts "[IP2Coutnry] Country code table(#{lang}) is updated."
+        STDERR << "[IP2Coutnry] Country code table(#{lang}) is updated.\n"
         File.write(cache_file, responce.body)
         modified = true
       when 304
-        STDERR.puts "[IP2Coutnry] Country code table(#{lang}) is not modified."
+        STDERR << "[IP2Coutnry] Country code table(#{lang}) is not modified.\n"
       when 404
-        STDERR.puts "[IP2Coutnry] Country code table(#{lang}) is not found."
+        STDERR << "[IP2Coutnry] Country code table(#{lang}) is not found.\n"
       else
-        STDERR.puts "[IP2Coutnry] Receive status code #{responce.status_code} for country code table(#{lang})."
+        STDERR << "[IP2Coutnry] Receive status code #{responce.status_code} for country code table(#{lang}).\n"
       end
     end
     return modified
@@ -31,15 +30,15 @@ class IP2Country::CC2Country
 
   @table : Hash(String, Hash(String, String))
 
-  def initialize()
-    @table = Hash(String, Hash(String, String)).new do |h,k|
+  def initialize
+    @table = Hash(String, Hash(String, String)).new do |h, k|
       h[k] = Hash(String, String).new
     end
     Dir.glob(CACHE_DIR + "/*.yaml").each do |file|
       lang = File.basename(file, ".yaml")
       data = YAML.parse(File.read(file)).as_h
       data.each do |cc, name|
-        @table[cc.as(String)][lang] = name.as(String)
+        @table[cc.as_s][lang] = name.as_s
       end
     end
   end
@@ -57,7 +56,6 @@ class IP2Country::CC2Country
   end
 
   def lookup_all(cc : String) : Hash(String, String)
-    @table[cc]? || { "en" => "[UNKNOWN]" }
+    @table[cc]? || {"en" => "[UNKNOWN]"}
   end
-
 end

@@ -1,4 +1,3 @@
-
 require "http/client"
 require "uri"
 require "yaml"
@@ -6,18 +5,18 @@ require "yaml"
 class IP2Country
   VERSION = "0.1.3"
 
-  CACHE_DIR = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/cache"
+  CACHE_DIR  = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/cache"
   REGISTRARS = {
-    "ARIN" => "http://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest",
-    "RIPE" => "http://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-extended-latest",
-    "APNIC" => "https://ftp.apnic.net/stats/apnic/delegated-apnic-extended-latest",
-    "LACNIC" => "http://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest",
-    "AFRINIC" => "http://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-extended-latest"
+    "ARIN"    => "http://ftp.arin.net/pub/stats/arin/delegated-arin-extended-latest",
+    "RIPE"    => "https://ftp.ripe.net/pub/stats/ripencc/delegated-ripencc-extended-latest",
+    "APNIC"   => "https://ftp.apnic.net/stats/apnic/delegated-apnic-extended-latest",
+    "LACNIC"  => "http://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-extended-latest",
+    "AFRINIC" => "http://ftp.afrinic.net/pub/stats/afrinic/delegated-afrinic-extended-latest",
   }
   LANGS = Set.new ["en", "fr", "de", "es", "pt", "ja", "ko", "zh"]
 
   def self.cache_update
-    STDERR.puts "[IP2Coutnry] Fetching conversion tables."
+    STDERR << "[IP2Coutnry] Fetching conversion tables.\n"
     CC2Country.cache_update
     IP2CC.cache_update
   end
@@ -28,7 +27,7 @@ class IP2Country
 
   def initialize(@default_lang = "en")
     unless File.directory?(CACHE_DIR)
-      STDERR.puts "[IP2Coutnry] Conversion tables not found."
+      STDERR << "[IP2Coutnry] Conversion tables not found.\n"
       IP2Country.cache_update
     end
     @conversion = IP2CC.new

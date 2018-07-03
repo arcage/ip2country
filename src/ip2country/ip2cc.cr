@@ -1,5 +1,4 @@
 class IP2Country::IP2CC
-
   FILE_NAME = IP2Country::CACHE_DIR + "/conversion.dat"
 
   def self.cache_update : Bool
@@ -14,42 +13,42 @@ class IP2Country::IP2CC
           registorer, cc, ver, start_ip, ip_num, date, desc = tmp
           min = IPAddr.new(start_ip)
           max = min + (ip_num.to_u32 - 1)
-          table[min .. max] = cc
+          table[min..max] = cc
         end
       end
-      ranges = table.keys.sort{|a,b| a.begin <=> b.begin}
+      ranges = table.keys.sort { |a, b| a.begin <=> b.begin }
       File.open(FILE_NAME, "w") do |fp|
         while range = ranges.shift?
           cc = table[range]
           while next_range = ranges.first?
             if range.end.succ == next_range.begin && table[next_range] == cc
-              range = range.begin .. next_range.end
+              range = range.begin..next_range.end
               ranges.shift
             else
               break
             end
           end
-          fp.puts [range.begin, range.end, cc].join("\t")
+          fp << [range.begin, range.end, cc].join("\t")
         end
       end
-      STDERR.puts "[IP2Coutnry] IP to CC conversion table updated."
+      STDERR << "[IP2Coutnry] IP to CC conversion table updated.\n"
     else
-      STDERR.puts "[IP2Coutnry] IP to CC conversion table not modified."
+      STDERR << "[IP2Coutnry] IP to CC conversion table not modified.\n"
     end
     return modified
   end
 
   @table : Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String)))
 
-  def initialize()
-    @table = Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String))).new do |h,k|
+  def initialize
+    @table = Hash(UInt8, Array(Tuple(Range(IPAddr, IPAddr), String))).new do |h, k|
       h[k] = Array(Tuple(Range(IPAddr, IPAddr), String)).new
     end
     File.each_line(FILE_NAME) do |line|
       min, max, cc = line.chomp.split("\t")
       min_ip = IPAddr.new(min)
       max_ip = IPAddr.new(max)
-      range = min_ip .. max_ip
+      range = min_ip..max_ip
       (min_ip.octet(0)..max_ip.octet(0)).each do |class_a|
         @table[class_a] << {range, cc}
       end
@@ -64,7 +63,6 @@ class IP2Country::IP2CC
   end
 
   class Registrar
-
     LIST = [] of self
 
     CACHE_DIR = IP2Country::CACHE_DIR + "/registrar"
@@ -91,26 +89,26 @@ class IP2Country::IP2CC
     def initialize(@name, uri_string : String)
       @uri = URI.parse(uri_string)
       @cache_file = CACHE_DIR + "/#{@name}.dat"
-      @mtime = File.exists?(@cache_file) ? File.stat(@cache_file).mtime : Time.new(2000, 1, 1)
+      @mtime = File.exists?(@cache_file) ? File.info(@cache_file).modification_time : Time.new(2000, 1, 1)
     end
 
     def cache_update : Bool
       modified = false
       http = HTTP::Client.new(@uri)
       headers = HTTP::Headers.new
-      headers["If-modified-since"] = HTTP.rfc1123_date(@mtime)
+      headers["If-modified-since"] = HTTP.format_time(@mtime)
       responce = http.get(@uri.path.not_nil!, headers)
       case responce.status_code
       when 200
-        STDERR.puts "[IP2Coutnry] IP allocation table of #{@name} is updated."
+        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is updated.\n"
         File.write(@cache_file, responce.body)
         modified = true
       when 304
-        STDERR.puts "[IP2Coutnry] IP allocation table of #{@name} is not modified."
+        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is not modified.\n"
       when 404
-        STDERR.puts "[IP2Coutnry] IP allocation table of #{@name} is not found."
+        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is not found.\n"
       else
-        STDERR.puts "[IP2Coutnry] Receive status code #{responce.status_code} for IP allocation table of #{@name}."
+        STDERR << "[IP2Coutnry] Receive status code #{responce.status_code} for IP allocation table of #{@name}.\n"
       end
       return modified
     end
@@ -122,7 +120,5 @@ class IP2Country::IP2CC
     IP2Country::REGISTRARS.each do |name, uri_string|
       LIST << Registrar.new(name, uri_string)
     end
-
   end
-
 end

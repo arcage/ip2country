@@ -41,7 +41,7 @@ struct IP2Country::IPAddr
   end
 
   def octets
-    (0..3).map {|i| octet(i)}
+    (0..3).map { |i| octet(i) }
   end
 
   def inspect(io)
@@ -51,5 +51,4 @@ struct IP2Country::IPAddr
   def to_s(io)
     io << octets.join(".")
   end
-
 end

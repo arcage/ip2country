@@ -14,5 +14,4 @@ describe IP2Country do
   it "returns lookuped country name by specified default language from ip" do
     IP2Country.new("ja").lookup("8.8.8.8").should eq "アメリカ合衆国"
   end
-
 end
