@@ -31,9 +31,9 @@ class IP2Country::IP2CC
           fp << [range.begin, range.end, cc].join("\t")
         end
       end
-      STDERR << "[IP2Coutnry] IP to CC conversion table updated.\n"
+      STDERR << "[IP2Country] IP to CC conversion table updated.\n"
     else
-      STDERR << "[IP2Coutnry] IP to CC conversion table not modified.\n"
+      STDERR << "[IP2Country] IP to CC conversion table not modified.\n"
     end
     return modified
   end
@@ -100,15 +100,15 @@ class IP2Country::IP2CC
       responce = http.get(@uri.path.not_nil!, headers)
       case responce.status_code
       when 200
-        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is updated.\n"
+        STDERR << "[IP2Country] IP allocation table of #{@name} is updated.\n"
         File.write(@cache_file, responce.body)
         modified = true
       when 304
-        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is not modified.\n"
+        STDERR << "[IP2Country] IP allocation table of #{@name} is not modified.\n"
       when 404
-        STDERR << "[IP2Coutnry] IP allocation table of #{@name} is not found.\n"
+        STDERR << "[IP2Country] IP allocation table of #{@name} is not found.\n"
       else
-        STDERR << "[IP2Coutnry] Receive status code #{responce.status_code} for IP allocation table of #{@name}.\n"
+        STDERR << "[IP2Country] Receive status code #{responce.status_code} for IP allocation table of #{@name}.\n"
       end
       return modified
     end
