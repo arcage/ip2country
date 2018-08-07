@@ -16,7 +16,7 @@ class IP2Country
   LANGS = Set.new ["en", "fr", "de", "es", "pt", "ja", "ko", "zh"]
 
   def self.cache_update
-    STDERR << "[IP2Coutnry] Fetching conversion tables.\n"
+    STDERR << "[IP2Country] Fetching conversion tables.\n"
     CC2Country.cache_update
     IP2CC.cache_update
   end
@@ -27,7 +27,7 @@ class IP2Country
 
   def initialize(@default_lang = "en")
     unless File.directory?(CACHE_DIR)
-      STDERR << "[IP2Coutnry] Conversion tables not found.\n"
+      STDERR << "[IP2Country] Conversion tables not found.\n"
       IP2Country.cache_update
     end
     @conversion = IP2CC.new

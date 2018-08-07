@@ -14,15 +14,15 @@ class IP2Country::CC2Country
       responce = http.get(uri.path.not_nil!, headers)
       case responce.status_code
       when 200
-        STDERR << "[IP2Coutnry] Country code table(#{lang}) is updated.\n"
+        STDERR << "[IP2Country] Country code table(#{lang}) is updated.\n"
         File.write(cache_file, responce.body)
         modified = true
       when 304
-        STDERR << "[IP2Coutnry] Country code table(#{lang}) is not modified.\n"
+        STDERR << "[IP2Country] Country code table(#{lang}) is not modified.\n"
       when 404
-        STDERR << "[IP2Coutnry] Country code table(#{lang}) is not found.\n"
+        STDERR << "[IP2Country] Country code table(#{lang}) is not found.\n"
       else
-        STDERR << "[IP2Coutnry] Receive status code #{responce.status_code} for country code table(#{lang}).\n"
+        STDERR << "[IP2Country] Receive status code #{responce.status_code} for country code table(#{lang}).\n"
       end
     end
     return modified
