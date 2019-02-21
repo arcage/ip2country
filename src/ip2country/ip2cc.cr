@@ -28,7 +28,7 @@ class IP2Country::IP2CC
               break
             end
           end
-          fp << [range.begin, range.end, cc].join("\t")
+          fp << [range.begin, range.end, cc].join("\t") << "\n"
         end
       end
       STDERR << "[IP2Country] IP to CC conversion table updated.\n"
