@@ -3,7 +3,7 @@ require "uri"
 require "yaml"
 
 class IP2Country
-  VERSION = "0.1.3"
+  VERSION = "0.1.4"
 
   CACHE_DIR  = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/cache"
   REGISTRARS = {
