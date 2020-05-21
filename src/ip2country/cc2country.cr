@@ -7,7 +7,7 @@ class IP2Country::CC2Country
     IP2Country::LANGS.each do |lang|
       uri = URI.parse("https://raw.githubusercontent.com/umpirsky/country-list/master/data/#{lang}/country.yaml")
       cache_file = CACHE_DIR + "/#{lang}.yaml"
-      mtime = File.exists?(cache_file) ? File.info(cache_file).modification_time : Time.new(2000, 1, 1)
+      mtime = File.exists?(cache_file) ? File.info(cache_file).modification_time : Time.utc(2000, 1, 1)
       http = HTTP::Client.new(uri)
       headers = HTTP::Headers.new
       headers["If-modified-since"] = HTTP.format_time(mtime)

@@ -37,7 +37,7 @@ struct IP2Country::IPAddr
   end
 
   def octet(index : Int) : UInt8
-    (@value >> ((3 - index) * 8)).to_u8
+    ((@value >> ((3 - index) * 8)) & 255).to_u8
   end
 
   def octets

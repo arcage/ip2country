@@ -89,7 +89,7 @@ class IP2Country::IP2CC
     def initialize(@name, uri_string : String)
       @uri = URI.parse(uri_string)
       @cache_file = CACHE_DIR + "/#{@name}.dat"
-      @mtime = File.exists?(@cache_file) ? File.info(@cache_file).modification_time : Time.new(2000, 1, 1)
+      @mtime = File.exists?(@cache_file) ? File.info(@cache_file).modification_time : Time.utc(2000, 1, 1)
     end
 
     def cache_update : Bool
