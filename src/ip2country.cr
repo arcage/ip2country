@@ -49,6 +49,14 @@ class IP2Country
   def lookup_all(addr : String) : Hash(String, String)
     lookup_all(IPAddr.new(addr))
   end
+
+  def country_code(addr : IPAddr) : String
+    @conversion.lookup(addr)
+  end
+
+  def country_code(addr : String) : String
+    country_code(IPAddr.new(addr))
+  end
 end
 
 require "./ip2country/*"

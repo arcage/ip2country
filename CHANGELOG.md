@@ -1,5 +1,13 @@
 # Change Logs
 
+## ver. 0.1.5
+
+- Add IP2Country#country_code method for converting IP address to **ISO 3166-1 alpha-2** country codes
+
+## ver. 0.1.4
+
+- Support crystal 0.34.0 or later
+
 ## ver. 0.1.3
 
 - support crystal 0.25.0

@@ -1,6 +1,6 @@
 # IP2Country
 
-IP(v4) address to country name converter for **Crystal**.
+IP(v4) address to country name / country code converter for **Crystal**.
 
 ## Installation
 
@@ -37,6 +37,9 @@ ip2country.lookup("8.8.8.8")       # => "アメリカ合衆国"
 # Get a hash of country names in all supported languages
 ip2country.lookup_all("8.8.8.8")
 # => {"de" => "Vereinigte Staaten", "en" => "United States", "es" => "Estados Unidos", "fr" => "États-Unis", "ja" => "アメリカ合衆国", "ko" => "미국", "pt" => "Estados Unidos", "zh" => "美国"}
+
+# Get ISO 3166-1 alpha-2 country code by IP address string
+ip2country.country_code("8.8.8.8") # => US
 ```
 
 At the first time you use, this library will fetch some conversion tables, and cache them. This may take a while.
