@@ -6,11 +6,11 @@
 
 ## ver. 0.1.4
 
-- Support crystal 0.34.0 or later
+- Support crystal 0.34.0
 
 ## ver. 0.1.3
 
-- support crystal 0.25.0
+- Support crystal 0.25.0
 
 ## ver. 0.1.2
 
